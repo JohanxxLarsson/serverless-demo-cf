@@ -1,0 +1,26 @@
+"CodeBuildProject": {
+    "Type": "AWS::CodeBuild::Project",
+    "Properties": {
+        "Description": "Runs buildspec.yaml",
+        "ServiceRole": { "Ref": "CodeBuildServiceRole" },
+        "Artifacts": { "Type": "NO_ARTIFACTS" },
+
+        "Environment": {
+            "Type": "LINUX_CONTAINER",
+            "ComputeType": "BUILD_GENERAL1_SMALL",
+            "Image": { "Ref": "codeBuildImage" }
+        },
+        "Source": {
+            "Type": "GITHUB",
+            "Auth": {
+                "Type":"OAUTH"
+            },
+            "Location": { "Ref": "gitHubCloneURL" },
+            "BuildSpec": "buildspec.yaml"
+        },
+        "Triggers": {
+            "Webhook":true
+        },
+        "TimeoutInMinutes": 5
+    }
+}
